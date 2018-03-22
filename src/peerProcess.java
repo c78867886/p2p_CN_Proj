@@ -11,8 +11,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.BitSet;
 
 public class peerProcess {
-	static final String peerInfoCfgPath = "PeerInfo.cfg";
-	static final String commonCfgPath = "Common.cfg";
+	static final String peerInfoCfgPath = "src/PeerInfo.cfg";
+	static final String commonCfgPath = "src/Common.cfg";
 	
 	HashMap<Integer, PeerInfo> peerInfos;
 	ArrayList<Integer> peerIdList;
@@ -29,7 +29,19 @@ public class peerProcess {
 	PeerInfo currentPeer;
 	
 	public static void main(String[] args) {
-		checkValidPeerId(args);
+		//checkValidPeerId(args);
+		
+		peerProcess currentPeer;
+		
+		try {
+			//currentPeer = new peerProcess(args[0]);
+			currentPeer = new peerProcess("1001");
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
 	}
 	
 	peerProcess(String arg) throws FileNotFoundException, IOException {
@@ -63,6 +75,8 @@ public class peerProcess {
 			pieceSize = Integer.parseInt(tempSplit[1]);
 			
 			pieceNum = (int) Math.ceil((float) fileSize /(float) pieceSize);
+			
+			System.out.printf("%d, %d, %d, %s, %d, %d, %d\n",numPreNeigh, unchokeingInterval, optUnchokeInterval, fileName, fileSize, pieceSize, pieceNum);
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("Cannot find Common.cfg!");
@@ -102,6 +116,7 @@ public class peerProcess {
 					hasCompleteFile = false;
 				
 				newPeer = new PeerInfo(peerid, host, port, hasCompleteFile);
+				System.out.printf("%s, %s, %d, %b\n",peerid, host, port, hasCompleteFile);
 				
 				peerInfos.put(Integer.parseInt(peerInfo[0]), newPeer);
 				
