@@ -1,4 +1,4 @@
-package p2p;
+
 
 public class NeighborPeer extends Peer {
 
