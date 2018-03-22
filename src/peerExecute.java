@@ -47,12 +47,21 @@ class TimeOutTask extends TimerTask {
 
 public abstract class peerExecute implements Runnable{
 	peerProcess currentPeer;
+	int goalID;
+	PeerInfo peerInfo;
+	PeerInfo target;
+	Socket socket;
+	DataInputStream inStream;
+	DataOutputStream outStream;
 	int downloadSpeed = 0;
 	boolean choked = true;
 	boolean alreadySentInterested = false;
 	boolean receivedUnchoked = false;
 	boolean end = false;
 	BitSet bitfield;
+	int FileSize;
+	int PieceSize;
+	
 	
 	peerExecute(peerProcess currentPeer, int goalID, Socket socket) throws IOException, InterruptedException {
 		this.currentPeer = currentPeer;
@@ -63,11 +72,43 @@ public abstract class peerExecute implements Runnable{
 		outStream = new DataOutputStream(socket.getOutputStream());
 	}
 	
+	
+	//--
+	private int Bitfieldlength (BitSet bitfield, int FileSize, int PieceSize) {
+		int blength = bitfield.length();
+		if (FileSize % PieceSize == 0) {
+			return FileSize / PieceSize;
+		} else {
+			return FileSize / PieceSize + 1;
+		}
+	}
+	
+	//--
+	public void run() {
+		try {
+			System.out.println("Ready to connect");
+			while (true) {
+				outStream.write(bitfield.toByteArray());
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//--
+	public boolean ChokeTimedout (boolean choked, boolean alreadySentInterested) {
+		if (alreadySentInterested) {
+			if (!receivedUnchoked) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
 	//--
 	public void Timer(boolean receivedUnchoked) {
+		if (!receivedUnchoked) {
 			return;
 		}
 		
