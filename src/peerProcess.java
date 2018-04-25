@@ -523,7 +523,7 @@ public class peerProcess {
                 } catch (InterruptedException | IOException e) {
                     return -1;
                 }
-            } else if (osName.contains("linux") || osName.contains("unix")) {
+            } else if (osName.contains("linux") || osName.contains("unix") || osName.contains("mac")) {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             } else {

@@ -314,6 +314,7 @@ public class NeighborPeer extends Peer {
                             sendMessage(PIECE, pieceIndex);
                         } else {
                             hostPeer.getSpeedLimiter().delayPieceMessage(neighborPeer, pieceIndex);
+                            sendMessage(CHOKE);
                         }
                         break;
                     case PIECE:
